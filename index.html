@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <title>Sony WH-1000XM5 | WebAR International Experience</title>
+
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --black:#050505;
+      --white:#ffffff;
+      --soft:#f5f6f8;
+      --line:#e7e9ee;
+      --blue:#1769ff;
+      --blue-dark:#0b4fd6;
+      --text:#111318;
+      --muted:#667085;
+      --success:#0a8f55;
+      --radius:26px;
+      --shadow:0 18px 50px rgba(16,24,40,.10);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:linear-gradient(180deg,#ffffff 0%,#f8f9fb 100%);
+      color:var(--text);
+      line-height:1.55;
+    }
+
+    button, a { font:inherit; }
+
+    header {
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(5,5,5,.96);
+      color:#fff;
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .nav {
+      width:min(1220px,94%);
+      min-height:78px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand-wrap { display:flex; align-items:center; gap:22px; }
+    .brand {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size:2rem;
+      letter-spacing:5px;
+      font-weight:700;
+    }
+    .tagline { color:#c7cbd3; font-size:.95rem; }
+
+    .lang-switch {
+      display:flex;
+      padding:4px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;
+      background:#151515;
+    }
+    .lang-btn {
+      border:0;
+      color:#d3d5da;
+      background:transparent;
+      padding:8px 16px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.2s ease;
+    }
+    .lang-btn.active { background:var(--blue); color:#fff; }
+
+    main { width:min(1220px,94%); margin:34px auto 0; }
+
+    .eyebrow {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:#eef4ff;
+      color:#2454a6;
+      font-size:.82rem;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .hero {
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:42px;
+      align-items:center;
+    }
+
+    .viewer-card {
+      position:relative;
+      min-height:620px;
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 30%,#ffffff 0%,#f2f3f5 52%,#e8ebef 100%);
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+    }
+
+    model-viewer {
+      width:100%;
+      height:620px;
+      background:transparent;
+      --poster-color:transparent;
+    }
+
+    .viewer-label {
+      position:absolute;
+      top:18px;
+      left:18px;
+      z-index:3;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(0,0,0,.06);
+      padding:10px 14px;
+      border-radius:14px;
+      box-shadow:0 8px 25px rgba(0,0,0,.08);
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .ar-button {
+      border:0;
+      border-radius:999px;
+      padding:15px 24px;
+      background:rgba(5,5,5,.95);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(0,0,0,.22);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .ar-button::before { content:"⌗"; font-size:1.2rem; }
+
+    .info { padding:10px 4px; }
+    .info h1 {
+      font-size:clamp(2.5rem,5vw,4.9rem);
+      line-height:.95;
+      letter-spacing:-.055em;
+      margin-bottom:18px;
+    }
+    .subtitle {
+      color:var(--blue);
+      font-weight:800;
+      font-size:1.15rem;
+      margin-bottom:18px;
+    }
+    .description {
+      color:#454b57;
+      font-size:1.06rem;
+      margin-bottom:24px;
+      max-width:640px;
+    }
+
+    .features { display:grid; gap:12px; margin:24px 0; }
+    .feature {
+      display:grid;
+      grid-template-columns:44px 1fr;
+      gap:12px;
+      align-items:center;
+      padding:13px 15px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:16px;
+    }
+    .icon {
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:#111;
+      color:#fff;
+      font-size:1.05rem;
+    }
+    .feature strong { display:block; font-size:.97rem; }
+    .feature span { color:var(--muted); font-size:.84rem; }
+
+    .market-note {
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin:22px 0;
+      padding:16px 18px;
+      border-left:4px solid var(--blue);
+      background:#f2f6ff;
+      border-radius:0 16px 16px 0;
+    }
+    .market-note b { color:#244b8d; }
+
+    .price-row {
+      display:flex;
+      align-items:flex-end;
+      gap:12px;
+      margin:24px 0 18px;
+      flex-wrap:wrap;
+    }
+    .price-label { color:var(--muted); font-size:.82rem; }
+    .price {
+      font-size:2rem;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+    .price-note { color:var(--muted); font-size:.82rem; }
+
+    .actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .cta, .secondary {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      padding:0 22px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .cta {
+      background:var(--blue);
+      color:#fff;
+      box-shadow:0 12px 28px rgba(23,105,255,.25);
+    }
+    .cta:hover { background:var(--blue-dark); transform:translateY(-2px); }
+    .secondary { border:1px solid var(--line); color:#20242b; background:#fff; }
+    .secondary:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(16,24,40,.08); }
+
+    .experience-grid {
+      margin-top:54px;
+      display:grid;
+      grid-template-columns:.86fr 1.14fr;
+      gap:22px;
+    }
+
+    .panel {
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:0 12px 34px rgba(16,24,40,.06);
+    }
+
+    .panel h2 { font-size:1.5rem; margin-bottom:8px; }
+    .panel p { color:var(--muted); }
+
+    .qr-box {
+      display:flex;
+      gap:24px;
+      align-items:center;
+      margin-top:20px;
+    }
+    #qrCode {
+      width:190px;
+      min-width:190px;
+      min-height:190px;
+      display:grid;
+      place-items:center;
+      background:#fff;
+      padding:8px;
+      border-radius:18px;
+      border:1px solid var(--line);
+    }
+
+    .steps { display:grid; gap:14px; margin-top:18px; }
+    .step {
+      display:grid;
+      grid-template-columns:38px 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .step-num {
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:#111;
+      color:#fff;
+      font-weight:800;
+    }
+    .step strong { display:block; margin-bottom:2px; }
+    .step p { font-size:.9rem; }
+
+    .course-banner {
+      margin:24px 0 0;
+      padding:18px 20px;
+      border-radius:18px;
+      background:#0b0b0c;
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .course-banner small { color:#adb3bd; }
+    .pill {
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:.82rem;
+    }
+
+    footer {
+      margin-top:42px;
+      padding:28px 20px;
+      background:#050505;
+      color:#b8bec8;
+      text-align:center;
+      font-size:.9rem;
+    }
+
+    .hidden-lang { display:none !important; }
+
+    @media (max-width:960px) {
+      .hero, .experience-grid { grid-template-columns:1fr; }
+      .viewer-card, model-viewer { min-height:500px; height:500px; }
+      .info h1 { font-size:3.2rem; }
+    }
+
+    @media (max-width:640px) {
+      .nav { min-height:68px; }
+      .tagline { display:none; }
+      .brand { font-size:1.45rem; }
+      .hero { gap:24px; }
+      .viewer-card, model-viewer { min-height:420px; height:420px; }
+      .info h1 { font-size:2.55rem; }
+      .qr-box { flex-direction:column; align-items:flex-start; }
+      .panel { padding:22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="nav">
+      <div class="brand-wrap">
+        <div class="brand">SONY</div>
+        <div class="tagline">
+          <span data-es>Experiencia global de producto</span>
+          <span data-en class="hidden-lang">Global product experience</span>
+        </div>
+      </div>
+
+      <div class="lang-switch" aria-label="Selector de idioma / Language selector">
+        <button class="lang-btn active" id="btnEs" type="button">ES</button>
+        <button class="lang-btn" id="btnEn" type="button">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="viewer-card">
+        <div class="viewer-label">
+          <span data-es>MODELO 3D · WEBAR</span>
+          <span data-en class="hidden-lang">3D MODEL · WEBAR</span>
+        </div>
+
+        <!--
+          IMPORTANTE PARA EL LABORATORIO:
+          Guarda el modelo 3D en la misma carpeta con el nombre: audifonos.glb
+          Si tu archivo tiene otro nombre, cambia únicamente src="audifonos.glb".
+        -->
+        <model-viewer
+          src="audifonos.glb"
+          alt="Sony WH-1000XM5 3D model"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-placement="floor"
+          ar-scale="auto"
+          camera-controls
+          auto-rotate
+          rotation-per-second="18deg"
+          shadow-intensity="1.25"
+          shadow-softness=".75"
+          exposure="1.05"
+          environment-image="neutral"
+          touch-action="pan-y">
+
+          <button class="ar-button" slot="ar-button" type="button">
+            <span data-es>Ver en mi espacio</span>
+            <span data-en class="hidden-lang">View in my space</span>
+          </button>
+        </model-viewer>
+      </div>
+
+      <div class="info">
+        <div class="eyebrow">
+          <span>🌎</span>
+          <span data-es>Marketing internacional · Experiencia inmersiva</span>
+          <span data-en class="hidden-lang">International marketing · Immersive experience</span>
+        </div>
+
+        <h1>Sony<br>WH-1000XM5</h1>
+
+        <p class="subtitle" data-es>
+          Audífonos inalámbricos premium con cancelación de ruido
+        </p>
+        <p class="subtitle hidden-lang" data-en>
+          Premium Noise Cancelling Wireless Headphones
+        </p>
+
+        <p class="description" data-es>
+          Diseñados para una experiencia de escucha premium: cancelación avanzada de ruido,
+          llamadas claras, comodidad durante largas jornadas y conectividad inalámbrica para
+          consumidores que se mueven entre trabajo, viajes y entretenimiento.
+        </p>
+        <p class="description hidden-lang" data-en>
+          Designed for a premium listening experience: advanced noise cancellation,
+          crystal-clear calls, long-lasting comfort and wireless connectivity for consumers
+          moving across work, travel and entertainment environments.
+        </p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="icon">◉</div>
+            <div>
+              <strong data-es>Cancelación premium de ruido</strong>
+              <strong data-en class="hidden-lang">Premium noise cancellation</strong>
+              <span data-es>Dos procesadores controlan 8 micrófonos.</span>
+              <span data-en class="hidden-lang">Two processors control 8 microphones.</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon">🔋</div>
+            <div>
+              <strong data-es>Hasta 30 horas de batería</strong>
+              <strong data-en class="hidden-lang">Up to 30 hours of battery life</strong>
+              <span data-es>Carga rápida para consumidores en movimiento.</span>
+              <span data-en class="hidden-lang">Quick charging for consumers on the move.</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon">◌</div>
+            <div>
+              <strong data-es>Llamadas claras y conexión multipunto</strong>
+              <strong data-en class="hidden-lang">Clear calls and multipoint connection</strong>
+              <span data-es>Una propuesta funcional para trabajo y movilidad.</span>
+              <span data-en class="hidden-lang">A functional proposition for work and mobility.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-note">
+          <div>💡</div>
+          <div data-es>
+            <b>Enfoque de marketing internacional:</b> la tecnología y el diseño del producto se mantienen,
+            mientras el idioma, los mensajes de valor y el canal comercial pueden adaptarse al mercado.
+          </div>
+          <div data-en class="hidden-lang">
+            <b>International marketing focus:</b> product technology and design remain consistent,
+            while language, value messages and commercial channels can be adapted to each market.
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div>
+            <div class="price-label" data-es>Consulta el precio actual en Amazon</div>
+            <div class="price-label hidden-lang" data-en>Check current price on Amazon</div>
+            <div class="price">Amazon US</div>
+          </div>
+          <div class="price-note" data-es>El precio puede cambiar según país, impuestos y disponibilidad.</div>
+          <div class="price-note hidden-lang" data-en>Price may vary by country, taxes and availability.</div>
+        </div>
+
+        <div class="actions">
+          <a class="cta"
+             href="https://www.amazon.com/dp/B09XS7JWHH"
+             target="_blank"
+             rel="noopener noreferrer">
+            <span data-es>Comprar ahora ↗</span>
+            <span data-en class="hidden-lang">Buy now ↗</span>
+          </a>
+
+          <a class="secondary" href="#experiencia">
+            <span data-es>Explorar experiencia</span>
+            <span data-en class="hidden-lang">Explore experience</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="experience-grid" id="experiencia">
+      <article class="panel">
+        <h2 data-es>📱 Lleva la experiencia al celular</h2>
+        <h2 data-en class="hidden-lang">📱 Take the experience to your phone</h2>
+
+        <p data-es>
+          Escanea este código QR desde un dispositivo compatible para abrir la misma landing y activar la experiencia WebAR.
+        </p>
+        <p data-en class="hidden-lang">
+          Scan this QR code from a compatible device to open the same landing page and activate the WebAR experience.
+        </p>
+
+        <div class="qr-box">
+          <div id="qrCode"></div>
+          <div>
+            <strong data-es>El QR se genera automáticamente</strong>
+            <strong data-en class="hidden-lang">The QR code is generated automatically</strong>
+            <p data-es>No debes cambiar el código cuando publiques la página: toma la URL actual del navegador.</p>
+            <p data-en class="hidden-lang">You do not need to change the QR after publishing: it uses the current browser URL.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2 data-es>🌐 Adaptación de la experiencia internacional</h2>
+        <h2 data-en class="hidden-lang">🌐 International experience adaptation</h2>
+
+        <p data-es>La misma propuesta de producto puede ajustarse digitalmente según el mercado objetivo.</p>
+        <p data-en class="hidden-lang">The same product proposition can be digitally adapted to the target market.</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <strong data-es>Idioma</strong><strong data-en class="hidden-lang">Language</strong>
+              <p data-es>El usuario cambia entre español e inglés sin abandonar la experiencia.</p>
+              <p data-en class="hidden-lang">The user switches between Spanish and English without leaving the experience.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <strong data-es>Propuesta de valor</strong><strong data-en class="hidden-lang">Value proposition</strong>
+              <p data-es>Beneficios destacados según movilidad, productividad y estilo de vida.</p>
+              <p data-en class="hidden-lang">Benefits are framed around mobility, productivity and lifestyle.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <strong data-es>Canal internacional</strong><strong data-en class="hidden-lang">International channel</strong>
+              <p data-es>El CTA conduce al canal comercial seleccionado para el mercado.</p>
+              <p data-en class="hidden-lang">The CTA leads to the commercial channel selected for the market.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-banner">
+          <div>
+            <strong data-es>Laboratorio · Marketing Internacional</strong>
+            <strong data-en class="hidden-lang">Lab · International Marketing</strong>
+            <br>
+            <small data-es>Producto + idioma + canal + experiencia inmersiva</small>
+            <small data-en class="hidden-lang">Product + language + channel + immersive experience</small>
+          </div>
+          <span class="pill">WebAR · 3D · Localization</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span data-es>Marketing Internacional · Experiencia WebAR de producto · Uso académico</span>
+    <span data-en class="hidden-lang">International Marketing · WebAR Product Experience · Academic use</span>
+  </footer>
+
+  <script>
+    const btnEs = document.getElementById('btnEs');
+    const btnEn = document.getElementById('btnEn');
+    const esElements = document.querySelectorAll('[data-es]');
+    const enElements = document.querySelectorAll('[data-en]');
+
+    function setLanguage(lang) {
+      const isEs = lang === 'es';
+      document.documentElement.lang = lang;
+
+      esElements.forEach(el => el.classList.toggle('hidden-lang', !isEs));
+      enElements.forEach(el => el.classList.toggle('hidden-lang', isEs));
+
+      btnEs.classList.toggle('active', isEs);
+      btnEn.classList.toggle('active', !isEs);
+
+      localStorage.setItem('webar-language', lang);
+    }
+
+    btnEs.addEventListener('click', () => setLanguage('es'));
+    btnEn.addEventListener('click', () => setLanguage('en'));
+
+    const savedLang = localStorage.getItem('webar-language');
+    setLanguage(savedLang === 'en' ? 'en' : 'es');
+
+    new QRCode(document.querySelector('#qrCode'), {
+      text: window.location.href,
+      width: 174,
+      height: 174,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
